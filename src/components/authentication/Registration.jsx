@@ -1,82 +1,142 @@
+import axios from "axios";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import SuccessDialog from "../../common/SuccessDialog";
 
 export default function Registration({ toggleView }) {
+  const [formData, setFormData] = useState({
+    full_name: "",
+    email: "",
+    contact_number: "",
+    address: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState("");
+  const [showDialog, setShowDialog] = useState(false); // State for success dialog
+
+  // Handle Input Change
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" }); // Clear error on typing
+  };
+
+  // Validate Form Fields
+  const validateForm = () => {
+    let newErrors = {};
+    if (!formData.full_name.trim())
+      newErrors.full_name = "Full Name is required";
+    if (!formData.email.match(/^\S+@\S+\.\S+$/))
+      newErrors.email = "Invalid email format";
+    if (!formData.contact_number.match(/^\d{10}$/))
+      newErrors.contact_number = "Invalid contact number (10 digits required)";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
+    if (formData.password.length < 6)
+      newErrors.password = "Password must be at least 6 characters";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
+  // Handle Form Submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/auth/register",
+        formData
+      );
+      setMessage("Registration successful! You can now log in.");
+      setFormData({
+        full_name: "",
+        email: "",
+        contact_number: "",
+        address: "",
+        password: "",
+      });
+
+      setShowDialog(true); // Show success dialog
+      setTimeout(() => {
+        setShowDialog(false); // Hide dialog after 2 seconds
+        toggleView(); // Navigate to Sign In
+      }, 2000);
+    } catch (err) {
+      setMessage(
+        err.response?.data?.error || "Registration failed. Try again."
+      );
+    }
+  };
+
   return (
-    <motion.div
-      className="w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] h-[100%] sm:h-[100%] md:h-[100%] lg:h-[100%] rounded-2xl shadow-2xl shadow-black-50 flex flex-col items-center justify-evenly bg-[#5D4037]"
-      key="registration"
-      initial={{ rotateY: 90, opacity: 0, transformPerspective: 1000 }}
-      animate={{ rotateY: 0, opacity: 1, transformPerspective: 1000 }}
-      exit={{ rotateY: -90, opacity: 0, transformPerspective: 1000 }}
-      transition={{ duration: 0.6, ease: "easeInOut" }}
-    >
-      <div className="bg-whitetext-center  flex flex-col justify-center items-center">
-        <h1 className="text-3xl font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 drop-shadow-lg">
-          Join Our Family
-        </h1>
-      </div>
+    <>
+      {/* Success Dialog */}
+      <SuccessDialog
+        message1="Registration Successful!"
+        message2="You can now log in."
+        showDialog={showDialog}
+      />
 
-      <div className="w-[90%] flex flex-col items-center justify-stretch ">
-        {/* Full Name */}
-        <div className="flex flex-col text-md w-full ">
-          <label className="text-xl text-white">Full Name</label>
-          <input
-            type="text"
-            className="border border-white text-white bg-[#807e7e] rounded-xl p-4 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white transition duration-300"
-          />
-        </div>
+      <motion.div
+        className="w-[80%] sm:w-[60%] md:w-[s50%] lg:w-[40%] lg:h-[100%] rounded-2xl shadow-2xl flex flex-col items-center justify-evenly bg-[#5D4037] p-6 max-h-[90vh] overflow-y-auto"
+        key="registration"
+        initial={{ rotateY: 90, opacity: 0 }}
+        animate={{ rotateY: 0, opacity: 1 }}
+        exit={{ rotateY: -90, opacity: 0 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
+        <h1 className="text-3xl font-extrabold text-white">Join Our Family</h1>
 
-        {/* Email */}
-        <div className="flex flex-col text-md w-full ">
-          <label className="text-xl  text-white">Email</label>
-          <input
-            type="email"
-            className="border border-white text-white bg-[#807e7e] rounded-xl p-4 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white transition duration-300"
-          />
-        </div>
+        {message && (
+          <div className="text-white border-2 border-red-200 bg-[#97646a]  w-[80%] rounded-md text-center">
+            {message}
+          </div>
+        )}
 
-        {/* Contact Number */}
-        <div className="flex flex-col text-md w-full ">
-          <label className="text-xl  text-white">Contact Number</label>
-          <input
-            type="tel"
-            className="border border-white text-white bg-[#807e7e] rounded-xl p-4 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white transition duration-300"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="w-[90%] flex flex-col">
+          {["full_name", "email", "contact_number", "address", "password"].map(
+            (field, index) => (
+              <div key={index} className="flex flex-col">
+                <label className="text-xl text-white capitalize">
+                  {field.replace("_", " ")}
+                </label>
+                <input
+                  type={field === "password" ? "password" : "text"}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  className="border border-white text-black bg-[#ded9c2] rounded-xl p-3 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white"
+                />
+                {errors[field] && (
+                  <p className="text-red-500 text-sm">{errors[field]}</p>
+                )}
+              </div>
+            )
+          )}
 
-        {/* Address */}
-        <div className="flex flex-col text-md w-full ">
-          <label className="text-xl  text-white">Address</label>
-          <input
-            type="text"
-            className="border border-white text-white bg-[#807e7e] rounded-xl p-4 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white transition duration-300"
-          />
-        </div>
+          <button
+            type="submit"
+            className="h-12 bg-[#FCF5D7] text-black font-bold rounded-lg shadow-md hover:bg-[#aca792] transition duration-300 text-md w-full mt-6"
+          >
+            Register
+          </button>
+        </form>
 
-        {/* Password */}
-        <div className="flex flex-col text-lg w-full ">
-          <label className="text-xl text-white">Password</label>
-          <input
-            type="password"
-            className="border border-white text-white bg-[#807e7e] rounded-xl p-4 h-12 w-full shadow-lg focus:outline-none focus:ring-2 focus:ring-white transition duration-300"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-col w-[90%] justify-around">
-        <button className="h-10 bg-[#FCF5D7] text-black font-bold rounded-lg shadow-md hover:bg-[#aca792] transition duration-300 text-md w-full">
-          Register
-        </button>
-        <p className="text-sm text-white text-center mt-3">
+        <p className="text-sm text-white">
           Already a member?{" "}
           <span
-            className="text-blue-500 underline hover:cursor-pointer text-[1rem]"
+            className="text-blue-500 underline cursor-pointer text-md"
             onClick={toggleView}
           >
             Sign In
           </span>
         </p>
-      </div>
-    </motion.div>
+      </motion.div>
+      {showDialog && (
+        <div className="fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 backdrop-blur-sm pointer-events-none"></div>
+      )}
+    </>
   );
 }
