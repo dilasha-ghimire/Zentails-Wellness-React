@@ -1,13 +1,12 @@
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "axios";
-import { motion } from "framer-motion";
-import Lottie from "lottie-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SuccessDialog from "../../common/SuccessDialog";
+import { motion } from "framer-motion";
 import animationData from "./../../assets/authentication/dog-animation.json";
+import SuccessDialog from "../../common/SuccessDialog";
+import { useNavigate } from "react-router-dom";
 import Registration from "./Registration";
+import Lottie from "lottie-react";
+import axios from "axios";
+import Footer from "../../common/Footer";
 
 export default function Login() {
   const [isLoginView, setIsLoginView] = useState(true);
@@ -38,6 +37,7 @@ export default function Login() {
       const { token, role, user } = response.data;
       localStorage.setItem("authToken", token);
       localStorage.setItem("userRole", role);
+      localStorage.setItem("userId", user._id);
       localStorage.setItem("userName", user.full_name);
 
       setEmailOrPhone("");
@@ -46,11 +46,11 @@ export default function Login() {
       setShowDialog(true);
       setTimeout(() => {
         setShowDialog(false);
-        if (role === "admin") {
-          window.location.href = "/admin-dashboard";
-        } else {
+        if (role === "customer") {
           navigate("/homepage");
-        } // Navigate to Sign In
+        } else if (role === "admin") {
+          navigate("/homepage"); // Temporary redirect for admin, update later
+        }
       }, 2000);
       // Navigate based on user role
     } catch (err) {
@@ -68,7 +68,7 @@ export default function Login() {
         showDialog={showDialog}
       />
       <div className="w-screen flex flex-col">
-        <header className="w-full lg:h-[16vh] bg-[#FCF5D7] flex items-center justify-center">
+        <header className="w-full lg:h-[16vh] bg-[#fff] flex items-center justify-center">
           <img
             src="src/assets/authentication/Logo_2.png"
             alt="logo"
@@ -79,7 +79,7 @@ export default function Login() {
           </h1>
         </header>
 
-        <main className="w-full lg:h-[80vh] flex justify-center items-center bg-[#FCF5D7]">
+        <main className="w-full lg:h-[80vh] flex justify-center items-center bg-[#fff]">
           {isLoginView ? (
             <motion.div
               className="w-[80%] sm:w-[60%] md:w-[50%] lg:w-[40%] lg:h-[90%] rounded-2xl shadow-2xl flex flex-col items-center justify-items-start bg-[#5D4037] p-6"
@@ -166,25 +166,7 @@ export default function Login() {
             <Registration toggleView={toggleView} />
           )}
         </main>
-
-        <footer className="w-full h-auto flex flex-col items-center justify-center bg-[#FCF5D7]">
-          <div className="mb-6 h-[40%] mt-2">
-            <button className="flex items-center gap-2 text-lg text-gray-800 hover:text-gray-800 focus:outline-none relative group">
-              <FontAwesomeIcon icon={faArrowLeft} className="text-gray-800" />{" "}
-              Back to Homepage
-              <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#5D4037] scale-x-0 origin-left transition-all duration-300 group-hover:scale-x-100"></span>
-            </button>
-          </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-4">
-              Copyright Â© 2025. Zentails Wellness Pvt.Ltd.
-            </p>
-            <p className="text-blue-500 text-md underline hover:cursor-pointer">
-              Terms of Use <span className="text-black-500"> | </span> Privacy &
-              Ad Choices
-            </p>
-          </div>
-        </footer>
+        <Footer />
       </div>
       {showDialog && (
         <div className="fixed top-0 left-0 w-full h-full bg-transparent bg-opacity-50 backdrop-blur-sm pointer-events-none"></div>
