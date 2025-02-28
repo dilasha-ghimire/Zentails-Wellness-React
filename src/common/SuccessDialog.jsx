@@ -1,7 +1,7 @@
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { motion } from "framer-motion";
 import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 
 const SuccessDialog = ({ message1, message2, showDialog }) => {
   useEffect(() => {
@@ -22,7 +22,7 @@ const SuccessDialog = ({ message1, message2, showDialog }) => {
             transition={{ duration: 0.3 }}
           >
             {/* Check Icon with Glow */}
-            <div className="text-5xl text-[#4CAF50] drop-shadow-lg">
+            <div className="text-5xl text-[#562626] drop-shadow-lg">
               <FontAwesomeIcon icon={faCircleCheck} />
             </div>
 
