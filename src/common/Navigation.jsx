@@ -1,37 +1,51 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouseUser,
   faRightFromBracket,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navigation() {
   const location = useLocation();
   const [profile, setProfile] = useState(null);
   const isProfilePage = location.pathname === "/profile";
   const isHomePage = location.pathname === "/homepage";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem("userId");
-      if (!userId) return; // Prevent fetch if userId is not set
+      const authToken = localStorage.getItem("authToken"); // Retrieve the token
+      if (!userId || !authToken) return;
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/customer/${userId}`
+          `http://localhost:3000/api/customer/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`, // Set the Authorization header
+            },
+          }
         );
         setProfile(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
-      console.log(profile);
     };
 
     fetchUserData();
   }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+
+    navigate("/");
+  };
 
   return (
     <div className="h-[20vh] fixed top-0 left-0 w-full z-50 shadow-md flex bg-white">
@@ -86,7 +100,10 @@ export default function Navigation() {
         </div>
 
         <div className="flex h-[100%] w-[30%] justify-center items-center gap-2">
-          <button className="relative group overflow-hidden py-2 px-2 h-fit cursor-pointer">
+          <button
+            className="relative group overflow-hidden py-2 px-2 h-fit cursor-pointer"
+            onClick={handleLogout} // Add onClick handler
+          >
             <FontAwesomeIcon icon={faRightFromBracket} size="xl" />
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
           </button>
@@ -106,7 +123,7 @@ export default function Navigation() {
                 />
               )}
             </div>
-            <p className="mt-2 font-great text-3xl">
+            <p className="mt-2 font-mont text-xl">
               {profile?.full_name || "Username"}
             </p>
           </div>
