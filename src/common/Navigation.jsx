@@ -13,6 +13,7 @@ export default function Navigation() {
   const [profile, setProfile] = useState(null);
   const isProfilePage = location.pathname === "/profile";
   const isHomePage = location.pathname === "/homepage";
+  const isHistoryPage = location.pathname === "/history";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function Navigation() {
 
   return (
     <div className="h-[20vh] fixed top-0 left-0 w-full z-50 shadow-md flex bg-white">
-      <div className="h-[100%] w-[40%] flex">
+      <div className="h-[100%] w-[40%] flex ">
         <div className="h-[100%] w-[30%] flex flex-col justify-center items-end">
           <img
             src="src/assets/authentication/Logo_2.png"
@@ -80,10 +81,19 @@ export default function Navigation() {
 
       <div className="h-[100%] w-[45%] flex justify-between">
         <div className="h-[100%] w-[40%] flex justify-center items-center gap-4 ml-20">
-          <button className="relative group overflow-hidden py-2 px-2 h-fit text-lg cursor-pointer">
+          <Link
+            to="/history"
+            className={`relative group overflow-hidden py-2 px-2 h-fit text-lg cursor-pointer ${
+              isHistoryPage ? "border-b-[2px] border-black" : ""
+            }`}
+          >
             History
-            <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>
-          </button>
+            <span
+              className={`absolute bottom-0 left-0 h-[2px] bg-black transition-all duration-300 ease-in-out ${
+                isHistoryPage ? "w-full" : "w-0 group-hover:w-full"
+              }`}
+            ></span>
+          </Link>
           <Link
             to="/profile"
             className={`relative group overflow-hidden py-2 px-2 h-fit text-lg cursor-pointer ${
