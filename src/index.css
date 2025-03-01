@@ -9,3 +9,26 @@
   --font-mont :"Montserrat",'sans-serif';
   --font-great :"Great Vibes",'sans-serif'
 }
+
+/* Custom scrollbar styling - custom-scrollbar-one */
+.custom-scrollbar-one::-webkit-scrollbar {
+  width: 6px; /* Set the width of the scrollbar */
+}
+
+.custom-scrollbar-one::-webkit-scrollbar-track {
+  background: none; /* Light gray track color */
+  border-radius: 10px; /* Rounded corners on the track */
+}
+
+.custom-scrollbar-one::-webkit-scrollbar-thumb {
+  background: #c7c5c5; /* Gray thumb */
+  border-radius: 10px; /* Rounded corners on the thumb */
+}
+
+.custom-scrollbar-one::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Darker thumb on hover */
+}
+
+.custom-scrollbar-one::-webkit-scrollbar-button {
+  display: none; /* Hide the scrollbar buttons (arrows) */
+}
