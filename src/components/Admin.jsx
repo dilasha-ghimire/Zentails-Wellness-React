@@ -1,7 +1,7 @@
 import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import AdminNavigation from "./Admin/AdminNavigation";
+import AdminNavigation from "./admin/AdminNavigation";
 
 export default function Admin() {
   const [selectedComponent, setSelectedComponent] = useState("pets"); // Default component
