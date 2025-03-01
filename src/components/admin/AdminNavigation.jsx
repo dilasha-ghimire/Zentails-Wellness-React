@@ -3,7 +3,7 @@ import { useState } from "react";
 import animationData from "../../assets/authentication/dog-animation.json";
 
 export default function AdminNavigation({ onSelect }) {
-  const [active, setActive] = useState("pets"); // Default selected item
+  const [active, setActive] = useState("pets");
 
   const handleSelect = (section) => {
     setActive(section);
@@ -35,19 +35,7 @@ export default function AdminNavigation({ onSelect }) {
         onClick={() => handleSelect("healthrecord")}
         className={getButtonClass("healthrecord")}
       >
-        Health Records
-      </button>
-      <button
-        onClick={() => handleSelect("medicalhistory")}
-        className={getButtonClass("medicalhistory")}
-      >
-        Medical History
-      </button>
-      <button
-        onClick={() => handleSelect("specialneed")}
-        className={getButtonClass("specialneed")}
-      >
-        Special Needs
+        Pet Health Records
       </button>
       <button
         onClick={() => handleSelect("therapysession")}
@@ -55,12 +43,7 @@ export default function AdminNavigation({ onSelect }) {
       >
         Therapy Session
       </button>
-      <button
-        onClick={() => handleSelect("vaccination")}
-        className={getButtonClass("vaccination")}
-      >
-        Vaccination
-      </button>
+
       <button
         onClick={() => handleSelect("customer")}
         className={getButtonClass("customer")}
