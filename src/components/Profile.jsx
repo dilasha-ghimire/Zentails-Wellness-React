@@ -1,10 +1,11 @@
+import { faArrowLeft, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
-import Navigation from "../common/Navigation";
-import Footer from "../common/Footer";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthorizationError from "../common/AuthorizationError";
+import Footer from "../common/Footer";
+import Navigation from "../common/Navigation";
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -15,17 +16,28 @@ export default function Profile() {
     phone: "",
     address: "",
   });
-  const [selectedImage, setSelectedImage] = useState(null); // Temporarily stores selected image
-  const [error, setError] = useState(""); // Stores validation error
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [error, setError] = useState("");
   const [updateMessage, setUpdateMessage] = useState("");
+  const [authError, setAuthError] = useState(false);
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem("userId");
-      if (!userId) return;
+      const authToken = localStorage.getItem("authToken");
+
+      if (!userId || !authToken) {
+        setAuthError(true); // If no token, trigger auth error immediately
+        return;
+      }
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/customer/${userId}`
+          `http://localhost:3000/api/customer/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
         );
         setProfile({
           profilePicture: response.data.profilePicture || null,
@@ -36,12 +48,17 @@ export default function Profile() {
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
+
+        if (error.response && error.response.status === 401) {
+          console.log("Authorization failed");
+          setAuthError(true);
+        }
       }
     };
 
     fetchUserData();
-  }, []);
-  // Handle file selection
+  }, [navigate, localStorage.getItem("authToken")]);
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -59,14 +76,13 @@ export default function Profile() {
       return;
     }
 
-    // Validate file size (2MB limit)
     if (file.size > 2 * 1024 * 1024) {
       setError("File size must be under 2MB.");
       return;
     }
 
-    setError(""); // Clear errors if valid
-    setSelectedImage(URL.createObjectURL(file)); // Create a preview of the image
+    setError("");
+    setSelectedImage(URL.createObjectURL(file));
   };
   const handleUpdate = async () => {
     const userId = localStorage.getItem("userId");
@@ -75,7 +91,7 @@ export default function Profile() {
       email: profile.email,
       contact_number: profile.phone,
       address: profile.address,
-      profilePicture: selectedImage ? selectedImage : profile.profilePicture, // Send the new image if selected
+      profilePicture: selectedImage ? selectedImage : profile.profilePicture,
     };
 
     try {
@@ -107,6 +123,9 @@ export default function Profile() {
       setError("An error occurred while updating your profile.");
     }
   };
+  if (authError) {
+    return <AuthorizationError />; // Render the error component if auth error
+  }
   return (
     <>
       <Navigation />
