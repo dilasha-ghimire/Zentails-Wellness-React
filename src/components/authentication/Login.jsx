@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import animationData from "./../../assets/authentication/dog-animation.json";
-import SuccessDialog from "../../common/SuccessDialog";
-import { useNavigate } from "react-router-dom";
-import Registration from "./Registration";
-import Lottie from "lottie-react";
 import axios from "axios";
+import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../common/Footer";
+import SuccessDialog from "../../common/SuccessDialog";
+import animationData from "./../../assets/authentication/dog-animation.json";
+import Registration from "./Registration";
 
 export default function Login() {
   const [isLoginView, setIsLoginView] = useState(true);

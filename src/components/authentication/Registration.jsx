@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
 import axios from "axios";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import SuccessDialog from "../../common/SuccessDialog";
 
 export default function Registration({ toggleView }) {
