@@ -49,7 +49,7 @@ export default function Login() {
         if (role === "customer") {
           navigate("/homepage");
         } else if (role === "admin") {
-          navigate("/admin"); // Temporary redirect for admin, update later
+          navigate("/admin");
         }
       }, 2000);
       // Navigate based on user role
