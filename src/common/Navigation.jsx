@@ -19,7 +19,7 @@ export default function Navigation() {
   useEffect(() => {
     const fetchUserData = async () => {
       const userId = localStorage.getItem("userId");
-      const authToken = localStorage.getItem("authToken"); // Retrieve the token
+      const authToken = localStorage.getItem("authToken");
       if (!userId || !authToken) return;
 
       try {
@@ -27,7 +27,7 @@ export default function Navigation() {
           `http://localhost:3000/api/customer/${userId}`,
           {
             headers: {
-              Authorization: `Bearer ${authToken}`, // Set the Authorization header
+              Authorization: `Bearer ${authToken}`,
             },
           }
         );
@@ -112,7 +112,7 @@ export default function Navigation() {
         <div className="flex h-[100%] w-[30%] justify-center items-center gap-2">
           <button
             className="relative group overflow-hidden py-2 px-2 h-fit cursor-pointer"
-            onClick={handleLogout} // Add onClick handler
+            onClick={handleLogout}
           >
             <FontAwesomeIcon icon={faRightFromBracket} size="xl" />
             <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-black transition-all duration-300 ease-in-out group-hover:w-full"></span>

@@ -26,7 +26,7 @@ export default function Profile() {
       const authToken = localStorage.getItem("authToken");
 
       if (!userId || !authToken) {
-        setAuthError(true); // If no token, trigger auth error immediately
+        setAuthError(true); 
         return;
       }
 
@@ -64,7 +64,6 @@ export default function Profile() {
 
     if (!file) return;
 
-    // Validate file type
     const allowedFormats = [
       "image/jpeg",
       "image/png",
@@ -96,7 +95,6 @@ export default function Profile() {
 
     try {
       const formData = new FormData();
-      // If there's a new selected image, append it to formData
       if (selectedImage) {
         const file = document.getElementById("profileUpload").files[0];
         formData.append("profilePicture", file);
@@ -116,7 +114,7 @@ export default function Profile() {
         setUpdateMessage("Your profile has been updated.");
         setTimeout(() => {
           navigate("/homepage");
-        }, 2000); // Navigate back after 2 seconds
+        }, 2000); 
       }
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -124,7 +122,7 @@ export default function Profile() {
     }
   };
   if (authError) {
-    return <AuthorizationError />; // Render the error component if auth error
+    return <AuthorizationError />; 
   }
   return (
     <>

@@ -11,12 +11,11 @@ import AdminPets from "./admin/AdminPets";
 import AdminTherapySession from "./admin/AdminTherapySession";
 
 export default function Admin() {
-  const [selectedComponent, setSelectedComponent] = useState("pets"); // Default component
-  const [profile, setProfile] = useState(null); // Store profile data
+  const [selectedComponent, setSelectedComponent] = useState("pets");
+  const [profile, setProfile] = useState(null);
   const [authError, setAuthError] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch the user profile using the userId from localStorage
   useEffect(() => {
     const fetchUserProfile = async () => {
       const userId = localStorage.getItem("userId");
@@ -32,7 +31,7 @@ export default function Admin() {
               },
             }
           );
-          setProfile(response.data); // Save profile data
+          setProfile(response.data);
         } catch (error) {
           if (error.response && error.response.status === 400) {
             setAuthError(true);
@@ -44,7 +43,6 @@ export default function Admin() {
     fetchUserProfile();
   }, []);
 
-  // Function to render the selected component
   const renderComponent = () => {
     switch (selectedComponent) {
       case "healthrecord":
@@ -54,18 +52,17 @@ export default function Admin() {
       case "customer":
         return <AdminCustomer />;
       default:
-        return <AdminPets />; // Default to Pets section
+        return <AdminPets />;
     }
   };
 
-  // Handle Logout
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userRole");
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");
 
-    navigate("/"); // Redirect to login page
+    navigate("/");
   };
   if (authError) {
     return <AuthorizationErrorAdmin />;

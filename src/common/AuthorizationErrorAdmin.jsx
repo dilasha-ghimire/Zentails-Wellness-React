@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assets/authentication/Logo_2.png"; // Import the logo
 
 const AuthorizationErrorAdmin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/"); // Redirect to login page
+      navigate("/");
     }, 2000);
 
-    return () => clearTimeout(timer); // Clear timeout if component unmounts
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
