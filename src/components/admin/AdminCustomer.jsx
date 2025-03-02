@@ -34,10 +34,10 @@ export default function AdminCustomer() {
     try {
       await axios.patch(
         `http://localhost:3000/api/customer/${id}/deactivate`,
-        {}, // Empty body for PATCH request
+        {}, 
         { headers: { Authorization: `Bearer ${authToken}` } }
       );
-      fetchCustomers(); // Refresh the list
+      fetchCustomers(); 
     } catch (error) {
       console.error("Error deactivating customer:", error);
       setError("Failed to deactivate customer");

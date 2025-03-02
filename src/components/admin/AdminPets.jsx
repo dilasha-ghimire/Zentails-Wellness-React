@@ -45,7 +45,6 @@ export default function AdminPets() {
     fetchPets();
   }, []);
 
-  // Handle file selection
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -53,13 +52,12 @@ export default function AdminPets() {
       setImagePreview(URL.createObjectURL(file));
     }
   };
-  // Add new pet
   const addPet = async () => {
     const formData = new FormData();
     formData.append("name", newPet.name);
     formData.append("age", newPet.age);
     formData.append("breed", newPet.breed);
-    formData.append("description", newPet.description); // Include description
+    formData.append("description", newPet.description); 
     formData.append("availability", newPet.availability);
     formData.append("charge_per_hour", newPet.charge_per_hour);
     if (imageFile) {
@@ -78,7 +76,7 @@ export default function AdminPets() {
         name: "",
         age: "",
         breed: "",
-        description: "", // Reset description field
+        description: "", 
         availability: true,
         charge_per_hour: "",
       });
@@ -104,7 +102,6 @@ export default function AdminPets() {
     }
   };
 
-  // Delete pet
   const deletePet = (id) => {
     axios
       .delete(`http://localhost:3000/api/pet/${id}`, {

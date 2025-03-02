@@ -46,7 +46,7 @@ export default function AdminHealthRecord() {
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src = "https://via.placeholder.com/150";
-              }} //placeholder
+              }} 
             />
             <h3 className="text-xl font-semibold mb-2">{data.pet.name}</h3>
             <p className="text-gray-600">

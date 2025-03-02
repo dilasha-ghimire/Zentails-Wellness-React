@@ -28,7 +28,7 @@ export default function AdminTherapySession() {
       await axios.delete(`http://localhost:3000/api/therapysessions/${id}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       });
-      fetchTherapySessions(); // Refresh the list
+      fetchTherapySessions(); 
     } catch (error) {
       console.error("Error deleting therapy session:", error);
     }
