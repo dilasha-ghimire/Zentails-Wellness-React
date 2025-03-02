@@ -21,15 +21,20 @@ This is the React frontend for the **Zentails Wellness - Purely Pawsitive** Pet 
 * Axios (for API requests)
 * Redux or Context API (for state management)
 
-## **Getting Started**
+## **🔗 Links**
+* [Frontend Repository](<https://github.com/dilasha-ghimire/Zentails-Wellness-React>)
+* [Backend Repository](<https://github.com/dilasha-ghimire/Zentails-Wellness-Server>)
+* [Flutter App Repository](<https://github.com/dilasha-ghimire/Zentails-Wellness-Flutter>)
 
-### **Prerequisites**
+## **🚀 Getting Started**
+
+### **1️⃣ Prerequisites**
 
 * Node.js and npm installed.
 * Backend server running [(Backend Repository)](https://github.com/dilasha-ghimire/Zentails-Wellness-Server)
 
 
-### **Installation**
+### **2️⃣ Installation**
 
 1.  Clone the repository:
     ```bash
