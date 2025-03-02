@@ -321,7 +321,7 @@ export default function AdminPets() {
                 <p className="text-gray-600 text-center">Age: {pet.age}</p>
                 <p className="text-gray-600 text-center">Breed: {pet.breed}</p>
                 <p className="text-gray-600 text-center">
-                  Charge Per Hour: ${pet.charge_per_hour}
+                  Charge Per Hour: Rs.{pet.charge_per_hour}
                 </p>
                 <p className="text-gray-600 text-center">
                   Available: {pet.availability ? "Yes" : "No"}
